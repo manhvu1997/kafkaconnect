@@ -191,7 +191,7 @@ def wrong_name():
 					file.writelines(_row_7)
 			#print compare_db
 			#print list_API
-			#print p_wrong
+			#print ip_wrong
 
 if __name__ == '__main__':
 	API = API_device.API_device()
