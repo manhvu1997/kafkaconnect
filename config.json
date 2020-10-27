@@ -1,0 +1,24 @@
+{
+    "database": {
+        "host": "42.116.24.228",
+        "dbname": "subipv6",
+        "table": "total_subipv6",
+        "user": "subipv6",
+        "pass": "*7CFAFD28E6D65A84EE3D54DCD0AA9FEAF656D1DE",
+        "create": "CREATE TABLE ticket_infor (Title VARCHAR(255), Priority INT(5), TakedDate VARCHAR(255), Issue VARCHAR(255), PDivision VARCHAR(255), ResolvedDate VARCHAR(255), TicketCode VARCHAR(255), Queue VARCHAR(255), ReasonName VARCHAR(255), TimeWorked VARCHAR(255), ServiceType VARCHAR(255), FoundEmail VARCHAR(255), TicketStatus VARCHAR(255), CreatedDate VARCHAR(255), PName VARCHAR(255), TicketID VARCHAR(255), PRIMARY KEY (TicketCode));",
+        "query": {
+            "get_data": "SELECT * FROM total_subipv6",
+            "get_device_name":"SELECT hostname FROM total_subipv6",
+            "get_ip":"SELECT ip_device FROM total_subipv6",
+            "show tables":"SHOW COLUMNS FROM total_subipv6"
+        }
+    },
+    "API":{
+        "url_token":"http://172.27.131.173:3001/netd-api/login",
+        "url_data":"http://172.27.131.173:3001/netd-api/api/net-devices",
+        "header":{
+            "Content-Type": "application/json",
+            "Authorization": "Basic c2NjLWFwaTpCNWJGREU2Sw=="
+        }
+    }
+}
