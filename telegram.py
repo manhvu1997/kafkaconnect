@@ -80,3 +80,69 @@ class Telegram():
         except Exception as e:
             logging.error("Telegram send: %s"%(e))
             raise e
+class Ticket():
+
+    def __init__(self):
+        # load ticket config from config file
+        try:
+            dir_path = path.dirname(path.abspath(__file__))
+            filename = path.join(dir_path, "config.json")
+            with open(filename, "r") as config_file:
+                self.config = json.load(config_file)
+                self.method = self.config["ticket"]['method']
+                self.url = self.config["ticket"]["url"]
+                self.interval = self.config["ticket"]["interval"]  # minutes
+                self.payload = self.config["ticket"]["payload"]
+        except Exception as e:
+            logging.error("Ticket init: %s"%(e))
+            raise e
+
+    def get(self):
+        # get ticket infor from Ticket API with FIXED time
+        self.headers = {
+            'content-type': "application/json"
+        }
+        try:
+            response = requests.request(self.method, self.url, data=json.dumps(self.payload), headers=self.headers,
+                                        verify=False)
+            # return json unicode data
+            if response.text:
+                return response.text
+            else:
+                return None
+        except Exception as e:
+            logging.error("Ticket get: %s"%(e))
+            raise e
+
+    def request_data(self):
+        # send a request to API with interval time
+        # time format for request Ticket API date
+        time_format = "%d/%m/%Y %H:%M:%S"
+        interval = self.config["ticket"]["interval"]
+        # convert system time to API time
+        self.payload["FromDate"] = (datetime.datetime.now() - datetime.timedelta(minutes=int(interval))).strftime(
+            time_format)
+        self.payload["ToDate"] = datetime.datetime.now().strftime(time_format)
+        try:
+            # return data from API response
+            return self.get()
+        except Exception as e:
+            logging.error("Ticket request_data %s: "%(e))
+            raise e
+
+    def ticket_status(self, from_date, to_date, code):
+        # send a request to update ticket status
+        time_format = "%d/%m/%Y %H:%M:%S" #datetime api format
+        
+        try:            
+            self.payload["FromDate"] = datetime.datetime.strptime(from_date, "%Y-%m-%d %H:%M:%S").strftime(time_format)
+            self.payload["ToDate"] = datetime.datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S").strftime(time_format)
+            data = json.loads(self.get())["Result"]["Data"]
+            for idx, ticket in enumerate(data):
+                if ticket["TicketCode"] == code:
+                    return ticket["TicketStatus"]
+                else:
+                    pass
+        except Exception as e:
+            logging.error("Ticket ticket_status: %s"%(e))
+            raise e
