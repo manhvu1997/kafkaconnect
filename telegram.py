@@ -255,4 +255,8 @@ class Database():
 
     def __del__(self):
         self.cnx.close()
-        self.cursor.close()            
+        self.cursor.close()   
+
+        
+#Updated by Manhvc 
+#28102020
