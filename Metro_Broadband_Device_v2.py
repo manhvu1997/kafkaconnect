@@ -196,7 +196,7 @@ def wrong_name():
 			print "No device is wrong name"
 		file.writelines(_row_7)
 
-			#print compare_db
+			
 			#print list_API
 			#print ip_wrong
 
