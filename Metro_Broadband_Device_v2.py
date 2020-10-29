@@ -41,6 +41,7 @@ def device_not_added():
 	for ip in ip_databse:
 		list_ip.append(ip)
 	reg_ip = re.findall(r"\d+\.\d+\.\d+\.\d+",str(list_ip))
+	reg_name = r"[A-Z]+\-[A-Z]+\-\d+"
 	with open ("/home/dev/Manhvc/device_database/list_review.txt","w+") as review_file:
 		review_file.writelines(_row_1)
 		review_file.writelines(_row_2)
@@ -84,7 +85,11 @@ def device_not_added():
 						zone_not_added= zone_not_added +filter_zone['Zone_6_']
 					elif name_not_added[0:3] in device_zone['Zone_7']:
 						zone_not_added= zone_not_added +filter_zone['Zone_7_']
-					province_not_added += i["name"][0:-3]
+					if (len(i["name"]) > 12):
+						province = re.findall(reg_name,str(i["name"]),re.MULTILINE)
+						province_not_added +=  province[0]
+					else:
+						province_not_added += i["name"][0:-3]
 					ccu_not_added += ccu
 					ipv4_not_added += ipv4
 					note += 'not added'
