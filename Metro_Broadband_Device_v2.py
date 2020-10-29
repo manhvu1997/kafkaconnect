@@ -113,35 +113,38 @@ def device_recalled():
 		if function[0] == "Metro BroadBand BRAS":
 			list_ip.append(i["ip"])
 	with open ("/home/dev/Manhvc/device_database/list_review.txt","a+") as file:
-		for data in data_databse:
-			name_recalled = ""
-			ip_recalled = ""
-			zone_recalled = ""
-			area_recalled = ""
-			province_recalled = ""
-			nat_recalled = ""
-			ipv6_recalled = ""
-			ccu_recalled = ""
-			ipv4_recalled = ""
-			_note = ""
-			#regex = r"\(u\'([A-Z]{3}\-[A-Z]+-\d+-\d+)\'.\s+u\'(\d+.\d+.\d+.\d+)\'.\s+(\d+)\,\s+(\d+)\,\s+u\'([A-Z]+)\'\,\s+(\d+)\,\s+u\'([A-Z]+-[A-Z]+\-\d+)\'\,\s+(.*\)\,)\s+(\d+)\,\s+(\d+)\)"
-			regex = r"\(u\'([A-Z]+\-[A-z]+\-(\d+|[A-Za-z]+)\-\d+(.*))\'\,\s+u\'(\d+.\d+.\d+.\d+)\'\,\s+(\d+)\,\s+(\d+)\,\s+u\'([A-Z]+)\'\,\s+(\d+)\,\s+u\'([A-Z]+\-[A-Z]+\-(\d+|[A-Za-z]+))\'\,\s+(.*\)\,)\s+(\d+)\,\s+(\d+)\)"
-			#regex = r"\(u.*\)"
-			matches = re.findall(regex,str(data),re.MULTILINE)
-			if matches[0][3] not in list_ip:
-				ip_recalled += matches[0][3]
-				update_time = str(datetime.datetime.now())
-				name_recalled += matches[0][0]
-				nat_recalled += matches[0][4]
-				ipv6_recalled += matches[0][5]
-				area_recalled += matches[0][6]
-				zone_recalled += matches[0][7]
-				province_recalled += matches[0][8]
-				ccu_recalled += matches[0][11]
-				ipv4_recalled += matches[0][12]
-				_note += 'recalled'
-				_row_5 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|\n'.format(name_recalled, ip_recalled, nat_recalled,ipv6_recalled,area_recalled,zone_recalled,province_recalled,update_time,ccu_recalled,ipv4_recalled,_note) 			
-				file.writelines(_row_5)
+		try:
+			for data in data_databse:
+				name_recalled = ""
+				ip_recalled = ""
+				zone_recalled = ""
+				area_recalled = ""
+				province_recalled = ""
+				nat_recalled = ""
+				ipv6_recalled = ""
+				ccu_recalled = ""
+				ipv4_recalled = ""
+				_note = ""
+				#regex = r"\(u\'([A-Z]{3}\-[A-Z]+-\d+-\d+)\'.\s+u\'(\d+.\d+.\d+.\d+)\'.\s+(\d+)\,\s+(\d+)\,\s+u\'([A-Z]+)\'\,\s+(\d+)\,\s+u\'([A-Z]+-[A-Z]+\-\d+)\'\,\s+(.*\)\,)\s+(\d+)\,\s+(\d+)\)"
+				regex = r"\(u\'([A-Z]+\-[A-z]+\-(\d+|[A-Za-z]+)\-\d+(.*))\'\,\s+u\'(\d+.\d+.\d+.\d+)\'\,\s+(\d+)\,\s+(\d+)\,\s+u\'([A-Z]+)\'\,\s+(\d+)\,\s+u\'([A-Z]+\-[A-Z]+\-(\d+|[A-Za-z]+))\'\,\s+(.*\)\,)\s+(\d+)\,\s+(\d+)\)"
+				#regex = r"\(u.*\)"
+				matches = re.findall(regex,str(data),re.MULTILINE)
+				if matches[0][3] not in list_ip:
+					ip_recalled += matches[0][3]
+					update_time = str(datetime.datetime.now())
+					name_recalled += matches[0][0]
+					nat_recalled += matches[0][4]
+					ipv6_recalled += matches[0][5]
+					area_recalled += matches[0][6]
+					zone_recalled += matches[0][7]
+					province_recalled += matches[0][8]
+					ccu_recalled += matches[0][11]
+					ipv4_recalled += matches[0][12]
+					_note += 'recalled'
+					_row_5 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|\n'.format(name_recalled, ip_recalled, nat_recalled,ipv6_recalled,area_recalled,zone_recalled,province_recalled,update_time,ccu_recalled,ipv4_recalled,_note) 			
+					file.writelines(_row_5)
+		except Exception:
+			print "No device has been recalled"
 def wrong_name():
 	ip_API = []
 	compare_API = []
@@ -157,39 +160,43 @@ def wrong_name():
 			list_API.append(i["name"])
 			compare_API.append(list_API)
 	with open ("/home/dev/Manhvc/device_database/list_review.txt","a+") as file:
-		for data in data_databse:
-			name_wrong = ""
-			ip_wrong = ""
-			zone_wrong = ""
-			area_wrong = ""
-			province_wrong = ""
-			nat_wrong = ""
-			ipv6_wrong = ""
-			ccu_wrong = ""
-			ipv4_wrong = ""
-			compare_db = []
-			reg = r"\(u\'([A-Z]+\-[A-z]+\-(\d+|[A-Za-z]+)\-\d+(.*))\'\,\s+u\'(\d+.\d+.\d+.\d+)\'\,\s+(\d+)\,\s+(\d+)\,\s+u\'([A-Z]+)\'\,\s+(\d+)\,\s+u\'([A-Z]+\-[A-Z]+\-(\d+|[A-Za-z]+))\'\,\s+(.*\)\,)\s+(\d+)\,\s+(\d+)\)"
-			match = re.findall(reg,str(data),re.MULTILINE)
-			if match[0][3] in ip_API:
-				compare_db.append(match[0][3])
-				compare_db.append(match[0][0])
-				if compare_db not in compare_API:
-					ip_wrong += match[0][3]
-					update_time = str(datetime.datetime.now())
-					name_wrong += match[0][0]
-					nat_wrong += match[0][4]
-					ipv6_wrong += match[0][5]
-					area_wrong += match[0][6]
-					zone_wrong += match[0][7]
-					province_wrong += match[0][8]
-					ccu_wrong += match[0][11]
-					ipv4_wrong += match[0][12]
-					note_ = "wrong_name"
-					_row_6 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|\n'.format(name_wrong, ip_wrong, nat_wrong,ipv6_wrong,area_wrong,zone_wrong,province_wrong,update_time,ccu_wrong,ipv4_wrong,note_)
-					_row_7 = '+ {0:-^20}+{1:-^20}+{2:-^6}+{3:-^6}+{4:-^6}+{5:-^6}+{6:-^15}+{7:-^30}+{8:-^6}+{9:-^6}+{10:-^20}+\n'.format('','', '','','','','','','','','')
-					file.writelines(_row_6)
-					file.writelines(_row_7)
-			#print compare_db
+		try:
+			for data in data_databse:
+				name_wrong = ""
+				ip_wrong = ""
+				zone_wrong = ""
+				area_wrong = ""
+				province_wrong = ""
+				nat_wrong = ""
+				ipv6_wrong = ""
+				ccu_wrong = ""
+				ipv4_wrong = ""
+				compare_db = []
+				reg = r"\(u\'([A-Z]+\-[A-z]+\-(\d+|[A-Za-z]+)\-\d+(.*))\'\,\s+u\'(\d+.\d+.\d+.\d+)\'\,\s+(\d+)\,\s+(\d+)\,\s+u\'([A-Z]+)\'\,\s+(\d+)\,\s+u\'([A-Z]+\-[A-Z]+\-(\d+|[A-Za-z]+))\'\,\s+(.*\)\,)\s+(\d+)\,\s+(\d+)\)"
+				match = re.findall(reg,str(data),re.MULTILINE)
+				if match[0][3] in ip_API:
+					compare_db.append(match[0][3])
+					compare_db.append(match[0][0])
+					if compare_db not in compare_API:
+						ip_wrong += match[0][3]
+						update_time = str(datetime.datetime.now())
+						name_wrong += match[0][0]
+						nat_wrong += match[0][4]
+						ipv6_wrong += match[0][5]
+						area_wrong += match[0][6]
+						zone_wrong += match[0][7]
+						province_wrong += match[0][8]
+						ccu_wrong += match[0][11]
+						ipv4_wrong += match[0][12]
+						note_ = "wrong_name"
+						_row_6 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|\n'.format(name_wrong, ip_wrong, nat_wrong,ipv6_wrong,area_wrong,zone_wrong,province_wrong,update_time,ccu_wrong,ipv4_wrong,note_)
+						_row_7 = '+ {0:-^20}+{1:-^20}+{2:-^6}+{3:-^6}+{4:-^6}+{5:-^6}+{6:-^15}+{7:-^30}+{8:-^6}+{9:-^6}+{10:-^20}+\n'.format('','', '','','','','','','','','')
+						file.writelines(_row_6)
+		except Exception:
+			print "No device is wrong name"
+		file.writelines(_row_7)
+
+			
 			#print list_API
 			#print ip_wrong
 
