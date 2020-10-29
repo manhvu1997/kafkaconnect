@@ -94,7 +94,7 @@ def device_not_added():
 					ccu_not_added += ccu
 					ipv4_not_added += ipv4
 					note += 'not added'
-					tup = (name_not_added,ip_not_added,int(nat_not_added),int(ipv6_not_added),area_not_added,int(zone_not_added),province_not_added,int(ccu_not_added),int(ipv4_not_added))
+					tup = (name_not_added[1:],ip_not_added[1:],int(nat_not_added),int(ipv6_not_added),area_not_added,int(zone_not_added),province_not_added,int(ccu_not_added),int(ipv4_not_added))
 					command = "insert into total_subipv6 (hostname, ip_device, NAT, ipv6, area, zone, province, ccu, ipv4) values "+ str(tup)+";"
 					_row_4 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|{11:^200}|\n'.format(name_not_added, ip_not_added, nat_not_added,ipv6_not_added,area_not_added,zone_not_added,province_not_added,update_time,ccu_not_added,ipv4_not_added,note,command)
 					review_file.writelines(_row_4)
