@@ -32,16 +32,17 @@ def device_not_added():
 					"Zone_7":["CTO","AGG","BLU","BTE","CMU","DTP","HGG","KGG","TGG","LAN","VLG","STG","TVH"]
 	}
 	filter_zone = {"Zone_1_":"1","Zone_2_":"2","Zone_3_":"3","Zone_4_":"4","Zone_5_":"5","Zone_6_":"6","Zone_7_":"7"}
-	_row_1 = '+ {0:-^20}+{1:-^20}+{2:-^6}+{3:-^6}+{4:-^6}+{5:-^6}+{6:-^15}+{7:-^30}+{8:-^6}+{9:-^6}+{10:-^20}+\n'.format('','', '','','','','','','','','')
-	_row_2 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|\n'.format('hostname', 'ip_device', 'NAT','IPV6','Area','Zone','Province','Log time','CCU','IPV4','NOTE')
-	_row_3 = '+ {0:-^20}+{1:-^20}+{2:-^6}+{3:-^6}+{4:-^6}+{5:-^6}+{6:-^15}+{7:-^30}+{8:-^6}+{9:-^6}+{10:-^20}+\n'.format('','', '','','','','','','','','')
+	_row_1 = '+ {0:-^20}+{1:-^20}+{2:-^6}+{3:-^6}+{4:-^6}+{5:-^6}+{6:-^15}+{7:-^30}+{8:-^6}+{9:-^6}+{10:-^20}+{11:-^200}+\n'.format('','', '','','','','','','','','','')
+	_row_2 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|{11:^200}|\n'.format('hostname', 'ip_device', 'NAT','IPV6','Area','Zone','Province','Log time','CCU','IPV4','NOTE','Command')
+	_row_3 = '+ {0:-^20}+{1:-^20}+{2:-^6}+{3:-^6}+{4:-^6}+{5:-^6}+{6:-^15}+{7:-^30}+{8:-^6}+{9:-^6}+{10:-^20}+{11:-^200}+\n'.format('','', '','','','','','','','','','')
 	list_ip = []
 	data = API.getdataAPI()
 	ip_databse = database.getipdevice()
 	for ip in ip_databse:
 		list_ip.append(ip)
 	reg_ip = re.findall(r"\d+\.\d+\.\d+\.\d+",str(list_ip))
-	reg_name = r"[A-Z]+\-[A-Z]+\-\d+"
+	reg_province = r"[A-Z]+\-[A-Z]+\-\d+"
+	reg_name = r"\'[A-Z]+\-[A-Z]+\-\d+.*"
 	with open ("/home/dev/Manhvc/device_database/list_review.txt","w+") as review_file:
 		review_file.writelines(_row_1)
 		review_file.writelines(_row_2)
@@ -86,14 +87,16 @@ def device_not_added():
 					elif name_not_added[0:3] in device_zone['Zone_7']:
 						zone_not_added= zone_not_added +filter_zone['Zone_7_']
 					if (len(i["name"]) > 12):
-						province = re.findall(reg_name,str(i["name"]),re.MULTILINE)
+						province = re.findall(reg_province,str(i["name"]),re.MULTILINE)
 						province_not_added +=  province[0]
 					else:
 						province_not_added += i["name"][0:-3]
 					ccu_not_added += ccu
 					ipv4_not_added += ipv4
 					note += 'not added'
-					_row_4 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|\n'.format(name_not_added, ip_not_added, nat_not_added,ipv6_not_added,area_not_added,zone_not_added,province_not_added,update_time,ccu_not_added,ipv4_not_added,note)
+					tup = (name_not_added,ip_not_added,int(nat_not_added),int(ipv6_not_added),area_not_added,int(zone_not_added),province_not_added,int(ccu_not_added),int(ipv4_not_added))
+					command = "insert into total_subipv6 (hostname, ip_device, NAT, ipv6, area, zone, province, ccu, ipv4) values "+ str(tup)+";"
+					_row_4 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|{11:^200}|\n'.format(name_not_added, ip_not_added, nat_not_added,ipv6_not_added,area_not_added,zone_not_added,province_not_added,update_time,ccu_not_added,ipv4_not_added,note,command)
 					review_file.writelines(_row_4)
 
 def device_recalled():
@@ -146,7 +149,8 @@ def device_recalled():
 					ccu_recalled += matches[0][11]
 					ipv4_recalled += matches[0][12]
 					_note += 'recalled'
-					_row_5 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|\n'.format(name_recalled, ip_recalled, nat_recalled,ipv6_recalled,area_recalled,zone_recalled,province_recalled,update_time,ccu_recalled,ipv4_recalled,_note) 			
+					command_recalled = 'none'
+					_row_5 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|{11:^200}|\n'.format(name_recalled, ip_recalled, nat_recalled,ipv6_recalled,area_recalled,zone_recalled,province_recalled,update_time,ccu_recalled,ipv4_recalled,_note,command_recalled) 			
 					file.writelines(_row_5)
 		except Exception:
 			print "No device has been recalled"
@@ -194,8 +198,9 @@ def wrong_name():
 						ccu_wrong += match[0][11]
 						ipv4_wrong += match[0][12]
 						note_ = "wrong_name"
-						_row_6 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|\n'.format(name_wrong, ip_wrong, nat_wrong,ipv6_wrong,area_wrong,zone_wrong,province_wrong,update_time,ccu_wrong,ipv4_wrong,note_)
-						_row_7 = '+ {0:-^20}+{1:-^20}+{2:-^6}+{3:-^6}+{4:-^6}+{5:-^6}+{6:-^15}+{7:-^30}+{8:-^6}+{9:-^6}+{10:-^20}+\n'.format('','', '','','','','','','','','')
+						command_wrong_name = "None"
+						_row_6 = '|{0:^20} |{1:^20}|{2:^6}|{3:^6}|{4:^6}|{5:^6}|{6:^15}|{7:^30}|{8:^6}|{9:^6}|{10:^20}|{11:^200}|\n'.format(name_wrong, ip_wrong, nat_wrong,ipv6_wrong,area_wrong,zone_wrong,province_wrong,update_time,ccu_wrong,ipv4_wrong,note_,command_wrong_name)
+						_row_7 = '+ {0:-^20}+{1:-^20}+{2:-^6}+{3:-^6}+{4:-^6}+{5:-^6}+{6:-^15}+{7:-^30}+{8:-^6}+{9:-^6}+{10:-^20}+{11:-^200}+\n'.format('','', '','','','','','','','','','')
 						file.writelines(_row_6)
 		except Exception:
 			print "No device is wrong name"
