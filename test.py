@@ -32,5 +32,6 @@ for i in list:
 		print (name[0])
 	else:
 		print ("false")
+#insert into total_subipv6 (hostname, ip_device, NAT, ipv6, area, zone, province, ccu, ipv4) values ('THA-MP-01-02-NEW', '113.22.0.40', 0, 0, 'FTN', 3, 'THA-MP-01',0,0);
 	
 	

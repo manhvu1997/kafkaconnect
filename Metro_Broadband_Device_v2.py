@@ -202,11 +202,6 @@ def wrong_name():
 		file.writelines(_row_7)
 
 			
-<<<<<<< HEAD
-			#print list_API
-			#print ip_wrong
-=======
->>>>>>> telegram
 
 if __name__ == '__main__':
 	API = API_device.API_device()
