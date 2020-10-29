@@ -189,9 +189,6 @@ def wrong_name():
 					_row_7 = '+ {0:-^20}+{1:-^20}+{2:-^6}+{3:-^6}+{4:-^6}+{5:-^6}+{6:-^15}+{7:-^30}+{8:-^6}+{9:-^6}+{10:-^20}+\n'.format('','', '','','','','','','','','')
 					file.writelines(_row_6)
 					file.writelines(_row_7)
-			#print compare_db
-			#print list_API
-			#print ip_wrong
 
 if __name__ == '__main__':
 	API = API_device.API_device()
