@@ -10,9 +10,6 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-      http_proxy: http://proxy.hcm.fpt.vn:80
-      https_proxy: http://proxy.hcm.fpt.vn:80
-      no_proxy: localhost, 127.0.0.1, 172.24.216.90,broker,connect
 
   broker:
     image: confluentinc/cp-server:7.2.2
@@ -42,9 +39,6 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-      http_proxy: http://proxy.hcm.fpt.vn:80
-      https_proxy: http://proxy.hcm.fpt.vn:80
-      no_proxy: localhost, 127.0.0.1, 172.24.216.90,zookeeper,connect
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.2.2
@@ -90,6 +84,4 @@ services:
       CONNECT_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
       CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
-      http_proxy: http://proxy.hcm.fpt.vn:80
-      https_proxy: http://proxy.hcm.fpt.vn:80
-      no_proxy: localhost, 127.0.0.1, 172.24.216.90,zookeeper,broker
+  
