@@ -6,7 +6,7 @@
     "database.hostname": "172.24.216.91",  
     "database.port": "3306",
     "database.user": "debezium",
-    "database.password": "Scc@1234",
+    "database.password": "***",
     "database.dbname":"voipmonitor",
     "database.server.name":"hcm-vclog-recording-91",
     "database.server.id": "1",    
